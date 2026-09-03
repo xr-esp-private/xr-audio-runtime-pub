@@ -1,0 +1,31 @@
+name: Validate XR Audio Linux Basic
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: Exact private source tag
+        required: true
+        default: v0.1.6
+        type: string
+      source_commit:
+        description: Exact private source commit
+        required: true
+        default: 1d9a0ec2954e04cf72868ce7451b274a24216ea0
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    permissions:
+      contents: read
+    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-validate.yml@78cb5530b2f5bed2c4c56206764b1cce71a645d9
+    with:
+      source_repository: xr-esp-private/xr-audio-runtime
+      source_tag: ${{ inputs.source_tag }}
+      source_commit: ${{ inputs.source_commit }}
+      source_manifest_path: packaging/release-manifest.json
+    secrets:
+      XR_PRIVATE_SOURCE_SSH_KEY: ${{ secrets.XR_PRIVATE_SOURCE_SSH_KEY }}

@@ -1,0 +1,45 @@
+name: Release XR Audio Linux Basic
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: Exact private source tag
+        required: true
+        default: v0.1.6
+        type: string
+      source_commit:
+        description: Exact private source commit
+        required: true
+        default: 1d9a0ec2954e04cf72868ce7451b274a24216ea0
+        type: string
+      prerelease:
+        description: Mark the GitHub Release as a prerelease
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-release.yml@78cb5530b2f5bed2c4c56206764b1cce71a645d9
+    with:
+      source_repository: xr-esp-private/xr-audio-runtime
+      source_tag: ${{ inputs.source_tag }}
+      source_commit: ${{ inputs.source_commit }}
+      source_manifest_path: packaging/release-manifest.json
+      apt_repository_url: ${{ vars.XR_APT_REPOSITORY_URL }}
+      apt_allow_plain_http: true
+      apt_distribution: ${{ vars.XR_APT_DISTRIBUTION }}
+      apt_component: ${{ vars.XR_APT_COMPONENT }}
+      apt_signing_key_url: ${{ vars.XR_APT_SIGNING_KEY_URL }}
+      apt_signing_key_fingerprint: ${{ vars.XR_APT_SIGNING_KEY_FINGERPRINT }}
+      prerelease: ${{ inputs.prerelease }}
+    secrets:
+      XR_PRIVATE_SOURCE_SSH_KEY: ${{ secrets.XR_PRIVATE_SOURCE_SSH_KEY }}
+      XR_APT_REPO_USER: ${{ secrets.XR_APT_REPO_USER }}
+      XR_APT_REPO_PASS: ${{ secrets.XR_APT_REPO_PASS }}
