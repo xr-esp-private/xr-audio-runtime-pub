@@ -80,6 +80,6 @@ desktop audio settings remain under the control of the desktop audio stack.
 3. Smoke-test the validated artifacts on supported Linux systems.
 4. Configure the APT upload secrets and run `Release XR Audio Linux Basic`.
 
-Both workflows call the immutable release framework commit
-`78cb5530b2f5bed2c4c56206764b1cce71a645d9`. Private source checkout uses a
+Both workflows call XR Release Workflows `v2.0.0` at immutable commit
+`607acbe7d098fc94d76a990b8c073c0b73ed0170`. Private source checkout uses a
 repository-scoped read-only Deploy Key.
