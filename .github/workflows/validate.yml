@@ -21,9 +21,9 @@ jobs:
   validate:
     permissions:
       contents: read
-    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-validate.yml@607acbe7d098fc94d76a990b8c073c0b73ed0170
+    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-validate.yml@4beac4eeee9080359d97d9defd02899181fc09af
     with:
-      workflow_implementation_commit: 607acbe7d098fc94d76a990b8c073c0b73ed0170
+      workflow_implementation_commit: 4beac4eeee9080359d97d9defd02899181fc09af
       source_repository: xr-esp-private/xr-audio-runtime
       source_tag: ${{ inputs.source_tag }}
       source_commit: ${{ inputs.source_commit }}
