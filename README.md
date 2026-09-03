@@ -12,8 +12,9 @@ XR-AUD Standard Speaker and XR-AUD Clean Voice endpoints. Basic USB audio does
 not require an XR license. Raw-8 capture, DOA, wake-word processing, ROS 2 and
 other advanced capabilities are not part of this package.
 
-Current formal candidate: `0.1.6` for Debian 12 compatible amd64 and arm64
-systems.
+Current CI-validated candidate: `0.1.6` for Debian 12 compatible amd64 and
+arm64 systems. See [VALIDATION.md](VALIDATION.md) for immutable inputs, package
+hashes, and the remaining hardware acceptance boundary.
 
 ## Install from a GitHub Release
 
