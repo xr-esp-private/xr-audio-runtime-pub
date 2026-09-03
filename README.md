@@ -40,8 +40,17 @@ Expected full signing-key fingerprint:
 1FEC138EA11C215E7B47CDFD028022BD3259955F
 ```
 
-The exact immutable GitHub key URL is inserted after the first repository
-commit. After installing the key under `/etc/apt/keyrings`, configure:
+Install the key from its immutable GitHub commit, then configure the repository:
+
+```bash
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL \
+  https://raw.githubusercontent.com/xr-esp-private/xr-audio-runtime-pub/35df7bc02d43c8eaf1aa5c890e5a847c350b8888/keys/xr-apt-signing-key.asc \
+  | sudo tee /etc/apt/keyrings/xr-audio-runtime.asc >/dev/null
+sudo chmod 0644 /etc/apt/keyrings/xr-audio-runtime.asc
+```
+
+The APT source entry is:
 
 ```text
 deb [signed-by=/etc/apt/keyrings/xr-audio-runtime.asc] http://47.106.100.173:8080 stable main
