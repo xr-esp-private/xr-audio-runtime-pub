@@ -6,12 +6,12 @@ on:
       source_tag:
         description: Exact private source tag
         required: true
-        default: v0.2.3
+        default: v0.2.4
         type: string
       source_commit:
         description: Exact private source commit
         required: true
-        default: a720d64679dd9dd37db5ce7091b93f732d45a20c
+        default: 25dc82212990b510a731f6cce21951cc7b862c78
         type: string
       prerelease:
         description: Mark the GitHub Release as a prerelease
