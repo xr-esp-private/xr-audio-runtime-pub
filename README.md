@@ -12,20 +12,20 @@ XR-AUD Standard Speaker and XR-AUD Clean Voice endpoints. Basic USB audio does
 not require an XR license. Raw-8 capture, DOA, wake-word processing, ROS 2 and
 other advanced capabilities are not part of this package.
 
-Current CI-validated candidate: `0.2.3` for Debian 12 compatible amd64 and
+Current CI-validated candidate: `0.2.5` for Debian 12 compatible amd64 and
 arm64 systems. See [VALIDATION.md](VALIDATION.md) for immutable inputs, package
 hashes, and the remaining hardware acceptance boundary. It is currently a
 validation artifact, not yet a published GitHub Release or APT update.
 
 ## Install a validated DEB
 
-Obtain the matching `xraudio-audio-defaults_0.2.3_<arch>.deb` and
+Obtain the matching `xraudio-audio-defaults_0.2.5_<arch>.deb` and
 `SHA256SUMS` from the authorized validation handoff, verify it, then install it
 with APT:
 
 ```bash
 sha256sum --check SHA256SUMS --ignore-missing
-sudo apt install ./xraudio-audio-defaults_0.2.3_arm64.deb
+sudo apt install ./xraudio-audio-defaults_0.2.5_arm64.deb
 ```
 
 Use the amd64 package on x86-64 systems. APT installs declared system
