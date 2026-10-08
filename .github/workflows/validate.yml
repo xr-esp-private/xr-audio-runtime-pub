@@ -6,12 +6,12 @@ on:
       source_tag:
         description: Exact private source tag
         required: true
-        default: v0.2.4
+        default: v0.2.5
         type: string
       source_commit:
         description: Exact private source commit
         required: true
-        default: 25dc82212990b510a731f6cce21951cc7b862c78
+        default: 39223ecc86499458649a3120d802ffd7751a82f5
         type: string
 
 permissions:
