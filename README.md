@@ -9,11 +9,12 @@
 树莓派／Jetson 通常选择 `arm64`，x86-64 电脑选择 `amd64`；可用
 `dpkg --print-architecture` 确认。不支持 `armhf`、纯 ALSA 或仅 PulseAudio 环境。
 
-当前版本 **0.2.5**：正式 APT 发布尚未完成，暂请联系提供离线包。
+当前版本 **0.2.5**：已提供在线 APT 安装和
+[离线下载](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.5)。
 
 ## 1. 在线安装
 
-正式发布后，首次安装复制下面整个代码块执行；已配置软件源时可跳过配置步骤。
+首次安装复制下面整个代码块执行；已配置软件源时可跳过配置步骤。
 
 ```bash
 (

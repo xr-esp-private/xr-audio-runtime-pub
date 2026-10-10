@@ -29,9 +29,28 @@ Speaker to 62 percent, restarting the service preserved 62 percent; the final
 robot operating state was restored to 85 percent with the service active.
 
 Acoustic playback/recording, full duplex, whole-system reboot and physical USB
-hotplug were not rerun for 0.2.5. This remains a validation artifact until the
-APT upload credentials are configured and the transactional release workflow
-publishes both the GitHub Release and APT package.
+hotplug were not rerun for 0.2.5. At the end of the October 8 validation this was
+a validation-only artifact. It has since been published as recorded below;
+publication does not broaden the physical acceptance boundary.
+
+## 0.2.5 正式发布：2026-10-10
+
+- [GitHub Release v0.2.5](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.5)：
+  `draft=false`、`prerelease=false`。
+- [正式发布工作流](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38023094065)：
+  源码绑定、两架构构建／测试、草稿资产、APT 验证和公开 Release 全部通过。
+- Caller commit：`f3664b228b6be7ffe84ab14692bdf095228c26e6`。
+- Framework commit：`08819029fdc1da9392be55c00d8bae73665bacf3`。
+- 源码仍是上述 `v0.2.5` / `39223ecc86499458649a3120d802ffd7751a82f5`，
+  两个 DEB 的 SHA-256 与 October 8 的验证工件完全一致。
+- APT `http://47.106.100.173:8080` 的 `stable/main` 已收录 `arm64`、`amd64`
+  的 `xraudio-audio-defaults 0.2.5`；CI 已验证签名、索引和 DEB SHA-256，
+  维护端另从 APT 和 GitHub 下载两包核对同一哈希。
+
+首次运行 `38022604828` 已上传并验证 APT，但在公开 Release 时遇到无 Git tag 的
+草稿查询问题；[框架 PR #6](https://github.com/xr-esp-private/xr-release-workflows/pull/6)
+修复精确 tag 的认证列表查询后重试成功，复用了原草稿和相同字节，未覆盖已发布包。
+只发布 Basic，不包含高级 Runtime、模型或固件，不改变已经验收的音频实现。
 
 ## 发布维护
 
@@ -51,7 +70,7 @@ URL Secret 优先，空时回退旧仓库变量 `XR_APT_REPOSITORY_URL`。
 0.2.5 的源码 tag 和 commit 保持不变。修复后的 Release caller 锁定框架提交
 `08819029fdc1da9392be55c00d8bae73665bacf3`；必须先推送框架提交，再推送／运行
 caller。Validate 保留已验证的 v2.0.1 实现，不需要 APT 凭据。
-实际发布完成后更新 README 的可用状态及本记录，不能仅凭本地测试宣称上线。
+实际发布证据见上节；不能仅凭本地测试宣称上线。
 
 完全断网部署还需目标系统依赖：`libc6`、`libgcc-s1`、`libstdc++6`、
 `init-system-helpers`、`pipewire-bin`、`wireplumber`。本包不携带完整系统音频栈。
