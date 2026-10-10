@@ -49,7 +49,7 @@ URL Secret 优先，空时回退旧仓库变量 `XR_APT_REPOSITORY_URL`。
 私有源码仅使用本仓限定的只读 Deploy Key，不继承全部组织 Secrets。
 
 0.2.5 的源码 tag 和 commit 保持不变。修复后的 Release caller 锁定框架提交
-`219ea93831159e132d69bddc25ae93227b6c9b85`；必须先推送框架提交，再推送／运行
+`b8b182fb2aff82e9b17911aa35a6a6265207bc08`；必须先推送框架提交，再推送／运行
 caller。Validate 保留已验证的 v2.0.1 实现，不需要 APT 凭据。
 实际发布完成后更新 README 的可用状态及本记录，不能仅凭本地测试宣称上线。
 
