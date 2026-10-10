@@ -1,4 +1,59 @@
-# 0.2.5 validation record
+# Basic 发布与验收记录
+
+## 2026-10-10：Modern 0.2.7 / Legacy 0.1.0-rc.4
+
+两种包的 ARM64、AMD64 均已发布到 APT `stable/main`：
+
+| 包 | Release | 正式工作流 |
+| --- | --- | --- |
+| Modern 0.2.7 | [v0.2.7](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.7)，非 prerelease | [38043970145](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38043970145) |
+| Legacy rc.4 | [v0.1.0-rc.4](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.1.0-rc.4)，prerelease | [38043965295](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38043965295) |
+
+- Modern source：`d4d21b64feec5a3d701c99ece8f585c80883e5d7`；Legacy source：
+  `7ce73842e3697772ae88a94666606610b6ad3942`。
+- Caller：`28c0da9`；framework：`08819029fdc1da9392be55c00d8bae73665bacf3`。
+- CI 完成双架构构建/测试、Basic-only payload 审计、APT签名/索引/工件校验和GitHub公开。
+  发布后维护端再次从GitHub和APT下载，以下四个SHA一致；Nano安装的rc.4与发布工件相同字节。
+
+```text
+1a3fbbf36c8da9ddd129d501b4212c4e4195b712b75bd347d691f9e1dc44a199  xraudio-audio-defaults_0.2.7_amd64.deb
+b7c9b7c26af2f5d019a28c3d039f05502f71de0d464d154eb94652b0138925d3  xraudio-audio-defaults_0.2.7_arm64.deb
+967dc6c595ea668c352e3327d7701e3125b5ee12826304e6956f0f6bd8b604ec  xraudio-audio-defaults-legacy_0.1.0-rc.4_amd64.deb
+fc4dc3c402f3c7d395eab5a949b78e077505390cbf0a9f196e36102c872a50b3  xraudio-audio-defaults-legacy_0.1.0-rc.4_arm64.deb
+```
+
+### Nano 实板范围
+
+Ubuntu18.04.6 ARM64／内核4.9.140-tegra／PulseAudio11.1，单台 XR-AUD-01
+`5852:7103`、完整SN `XR48CA43A3FF98`。APP完整版本未核验，不借用其它板版本。
+
+1. rc.3 整机重启复现：默认Speaker/Clean Voice及duplex profile正确，Pulse100%，
+   但硬件master/LR均为raw0（声明−50dB）。此前用户确认手动恢复0dB后多次播放正常。
+2. rc.4 安装前置硬件低值、软件62%，DEB升级只升级本包，无系统库升级。
+   服务自动恢复硬件raw50／0dB，保留62%；服务重启也保留62%。
+3. 恢复用户批准的100%后整机重启：服务自动启动，默认端点正确，硬件master/LR
+   自动0dB、Pulse100%，后续回读保持；paplay六秒测试文件返回0，硬件值未降低。
+   本轮新包重启后的听感确认仍需用户反馈，不把命令成功当作声学验收。
+4. 配置签名APT源后，Nano成功读取rc.4候选；另外实际从APT下载43.7kB工件并执行
+   固定版本reinstall，只有本包重装、无系统库升级。公钥使用固定GitHub commit与SHA验证，
+   APT正常验证InRelease。
+
+未重新验证完整AEC、录音、真实物理拔插或其它Nano镜像。rc.4保留prerelease标记；
+APT的`stable`是仓库suite，不等于所有平台均通过量产验收。
+
+### Modern 范围与安装兼容性
+
+Modern新装首次100%，旧初始化状态及用户调音保留；增加严格USB绑定的只读Playback
+诊断，不写硬件控件、不与PipeWire/WirePlumber争抢。增加系统`alsa-utils`依赖。
+Mac全套16测试、Linux双架构CI通过，未对0.2.7重跑RPI/Orin实板；0.2.5的旧实板结论
+不冒充新包验收。0.2.6仅有失败CI：测试fixture的单元素optional/vector初始化不兼容
+GCC12，未发布DEB；修复采用0.2.7，不覆盖其源码tag。
+
+Nano GnuPG2.2.4不支持原README的`--show-keys`。现使用固定公钥文件SHA-256
+`c12ebdc1b91eecb839d29d7f3d8aab8e05e1ad1edbd0426f3c7c36a7c12220a5`校验，
+指纹仍为`1FEC138EA11C215E7B47CDFD028022BD3259955F`；APT签名验证不关闭。
+
+## 历史：0.2.5 validation record
 
 GitHub validation-only completed successfully on 2026-10-08:
 
