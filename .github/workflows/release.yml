@@ -6,13 +6,20 @@ on:
       source_tag:
         description: Exact private source tag
         required: true
-        default: v0.2.5
+        default: v0.2.6
         type: string
       source_commit:
         description: Exact private source commit
         required: true
-        default: 39223ecc86499458649a3120d802ffd7751a82f5
         type: string
+      source_manifest_path:
+        description: Modern PipeWire or Legacy PulseAudio release manifest
+        required: true
+        default: packaging/release-manifest.json
+        type: choice
+        options:
+          - packaging/release-manifest.json
+          - packaging/release-manifest-legacy.json
       prerelease:
         description: Mark the GitHub Release as a prerelease
         required: true
@@ -32,7 +39,7 @@ jobs:
       source_repository: xr-esp-private/xr-audio-runtime
       source_tag: ${{ inputs.source_tag }}
       source_commit: ${{ inputs.source_commit }}
-      source_manifest_path: packaging/release-manifest.json
+      source_manifest_path: ${{ inputs.source_manifest_path }}
       apt_repository_url: ${{ vars.XR_APT_REPOSITORY_URL }}
       apt_allow_plain_http: true
       # Publish this Basic product only to the shared stable/main index.
