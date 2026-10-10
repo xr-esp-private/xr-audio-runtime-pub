@@ -26,9 +26,9 @@ jobs:
   release:
     permissions:
       contents: write
-    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-release.yml@b8b182fb2aff82e9b17911aa35a6a6265207bc08
+    uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-release.yml@08819029fdc1da9392be55c00d8bae73665bacf3
     with:
-      workflow_implementation_commit: b8b182fb2aff82e9b17911aa35a6a6265207bc08
+      workflow_implementation_commit: 08819029fdc1da9392be55c00d8bae73665bacf3
       source_repository: xr-esp-private/xr-audio-runtime
       source_tag: ${{ inputs.source_tag }}
       source_commit: ${{ inputs.source_commit }}
