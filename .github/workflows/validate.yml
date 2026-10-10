@@ -6,7 +6,7 @@ on:
       source_tag:
         description: Exact private source tag
         required: true
-        default: v0.2.6
+        default: v0.2.7
         type: string
       source_commit:
         description: Exact private source commit
