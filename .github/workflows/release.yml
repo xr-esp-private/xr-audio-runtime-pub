@@ -6,7 +6,7 @@ on:
       source_tag:
         description: Exact private source tag
         required: true
-        default: v0.2.7
+        default: v0.2.8
         type: string
       source_commit:
         description: Exact private source commit
@@ -31,6 +31,11 @@ permissions:
 
 jobs:
   release:
+    # Both backends share stable/main; serialize source tags during publication
+    # so Packages and its signed Release cannot be observed across our uploads.
+    concurrency:
+      group: xr-audio-basic-apt-stable-main
+      cancel-in-progress: false
     permissions:
       contents: write
     uses: xr-esp-private/xr-release-workflows/.github/workflows/linux-deb-release.yml@08819029fdc1da9392be55c00d8bae73665bacf3
