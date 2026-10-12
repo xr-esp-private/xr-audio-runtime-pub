@@ -10,17 +10,19 @@
 
 | 系统／音频后端 | 使用的包 |
 | --- | --- |
-| RPI Ubuntu 24.04、Pi OS Bookworm 等，使用 PipeWire + WirePlumber | `xraudio-audio-defaults` **0.2.7** |
-| Jetson Nano Ubuntu 18.04，使用原生 PulseAudio 11 | `xraudio-audio-defaults-legacy` **0.1.0-rc.4** |
+| RPI Ubuntu 24.04、Pi OS Bookworm 等，使用 PipeWire + WirePlumber | `xraudio-audio-defaults` **0.2.8** |
+| Jetson Nano Ubuntu 18.04，使用原生 PulseAudio 11 | `xraudio-audio-defaults-legacy` **0.1.0-rc.5** |
 | Jetson Orin 或其它镜像 | 先确认实际后端；不能沿用 Nano 或 RPI 的验收结论 |
 
 树莓派／Jetson 的 64 位系统通常为 `arm64`，x86-64 电脑为 `amd64`；以
 `dpkg --print-architecture` 为准。不支持 `armhf` 和纯 ALSA 环境。
 两个包互斥，不要同时安装；Legacy 不替换系统音频栈。
 
-Legacy rc.4 针对已核验、Pulse未接管的 USB Playback 控件恢复0 dB，解决本次 Nano
-重启后系统显示100%但硬件音量过低的问题。现代包仅增加只读诊断，不与PipeWire争抢
-硬件音量控制。具体实板范围见[验收记录](VALIDATION.md)，不代表所有定制镜像均已验证。
+无需配置每板尾号：按登记型号及 Standard 音频角色选择唯一兼容设备，换板后自动迁移。
+SN只用于当前绑定和多板消歧；首次测试只连接一块XR-AUD，多板不自动猜选。
+Legacy保留受控0 dB硬件恢复；现代包只读诊断，不与PipeWire争抢硬件音量控制。
+Nano rc.5已完成安装、旧板状态迁移、重启和人工试听；Modern0.2.8本轮为双架构CI验证。
+详细范围见[验收记录](VALIDATION.md)，不代表所有镜像或完整AEC均已验证。
 
 ## 1. 在线安装
 
@@ -65,23 +67,24 @@ sudo apt install xraudio-audio-defaults-legacy
 从 [Releases](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases) 下载
 对应平台／架构的 DEB 和 `SHA256SUMS`，或联系获取 ZIP。ZIP 先解压，在文件所在目录执行。
 
-**RPI／PipeWire 系统（0.2.7）：**
+**RPI／PipeWire 系统（0.2.8）：**
 
 ```bash
 sha256sum --check SHA256SUMS --ignore-missing && \
-  sudo apt install ./xraudio-audio-defaults_0.2.7_arm64.deb
+  sudo apt install ./xraudio-audio-defaults_0.2.8_arm64.deb
 ```
 
 **Jetson Nano／Ubuntu 18.04／PulseAudio：**
 
 ```bash
 sha256sum --check SHA256SUMS --ignore-missing && \
-  sudo apt install ./xraudio-audio-defaults-legacy_0.1.0-rc.4_arm64.deb
+  sudo apt install ./xraudio-audio-defaults-legacy_0.1.0-rc.5_arm64.deb
 ```
 
 `amd64` 系统换成对应文件名。旧版直接覆盖安装，无需先卸载。
 缺失的系统依赖由 `apt` 补齐；完全断网时请先准备目标系统的依赖包。
 Nano 不要强装新版 libc 或从新 Ubuntu 软件源补库。
+制作通用SD镜像时不要携带测试板的运行绑定状态；普通升级会保留用户音量记录。
 
 ## 3. 启用与检查
 

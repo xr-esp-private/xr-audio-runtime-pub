@@ -1,5 +1,38 @@
 # Basic 发布与验收记录
 
+## 2026-10-12：换板迁移修复发布
+
+- [Modern v0.2.8](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.8)：
+  非prerelease，[发布Action](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38248871656)成功。
+- [Legacy v0.1.0-rc.5](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.1.0-rc.5)：
+  保留prerelease，[发布Action](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38248865630)重试失败步骤后成功。
+- 两包各ARM64/AMD64均在APT `stable/main`；源码commit均为
+  `736e1e3c11575efdf254c1b2ad0581728f4b1443`，实现已合并并推送正式main。
+  Validate-only分别为`38247306130`和`38247315680`，不以构建替代实板。
+- 四包从GitHub/APT另行下载，SHA与验证工件一致，原rc.4/0.2.7不覆盖。
+
+```text
+964c48fcab39b396e79057fd47c9b3eddc5e3ea27d6b945b58867ecde503062d  xraudio-audio-defaults-legacy_0.1.0-rc.5_amd64.deb
+5663c27f1bc413f38507070e06a9d51c24516ad067cc3058d88fc243554ed4f3  xraudio-audio-defaults-legacy_0.1.0-rc.5_arm64.deb
+952ba1d8edf79b687a1b6cfaa6e76c4131ac579f0559b8879dec43f9f19cefd7  xraudio-audio-defaults_0.2.8_amd64.deb
+569ac542afb20627c46ce51cadf0976b71c75399fcc0c145968353a36a08955e  xraudio-audio-defaults_0.2.8_arm64.deb
+```
+
+Nano Ubuntu18.04.6/Pulse11.1/arm64，唯一`5852:7103 / XR48CA43A3FFA8`：保留旧FF98
+状态直接升级CI DEB，自动迁入FFA8并保留两板初始化记录；默认2ch Speaker/mono
+Clean Voice、100%/硬件0dB正确。62%和静音在候选程序及正式服务重启后保持，随后
+恢复100%/不静音；整机重启自动恢复。默认MIC短录音为mono16k/39756帧，证明传输
+可用，不证明声学质量。用户亲自确认重启后的播放正常并授权发布；正式包SHA一致。
+当前验收不包含换另一物理板/物理拔插、完整AEC、整车其他功能；没有刷固件。
+
+Modern默认唯一新板不再永久等待旧ID，schema7保留最多32板音量完成记录；旧状态缺
+所属身份时保守保留音量并日志，不猜测或一律重置100%。本机16测试与两架构CI通过，
+本轮没有Modern实板。正常停止保留未解决回退责任，显式恢复/卸载仍严格；无固定尾号。
+
+首次并行发布时，APT的签名与Packages正处切换窗口，Legacy被SHA守门阻断；没有放宽
+检查，另一流程结束后只重试失败发布步骤成功。Caller现已串行两后端stable/main发布，
+保留所有签名/字节校验。此变化不声称解决所有外部仓库并发上传情形。
+
 ## 2026-10-10：Modern 0.2.7 / Legacy 0.1.0-rc.4
 
 两种包的 ARM64、AMD64 均已发布到 APT `stable/main`：
