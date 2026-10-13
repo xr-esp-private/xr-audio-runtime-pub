@@ -10,8 +10,8 @@
 
 | 系统／音频后端 | 使用的包 |
 | --- | --- |
-| RPI Ubuntu 24.04、Pi OS Bookworm 等，使用 PipeWire + WirePlumber | `xraudio-audio-defaults` **0.2.8** |
-| Jetson Nano Ubuntu 18.04，使用原生 PulseAudio 11 | `xraudio-audio-defaults-legacy` **0.1.0-rc.5** |
+| RPI Ubuntu 24.04、Pi OS Bookworm 等，使用 PipeWire + WirePlumber | `xraudio-audio-defaults` **0.2.9** |
+| Jetson Nano Ubuntu 18.04，使用原生 PulseAudio 11 | `xraudio-audio-defaults-legacy` **0.1.0-rc.6** |
 | Jetson Orin 或其它镜像 | 先确认实际后端；不能沿用 Nano 或 RPI 的验收结论 |
 
 树莓派／Jetson 的 64 位系统通常为 `arm64`，x86-64 电脑为 `amd64`；以
@@ -21,7 +21,7 @@
 无需配置每板尾号：按登记型号及 Standard 音频角色选择唯一兼容设备，换板后自动迁移。
 SN只用于当前绑定和多板消歧；首次测试只连接一块XR-AUD，多板不自动猜选。
 Legacy保留受控0 dB硬件恢复；现代包只读诊断，不与PipeWire争抢硬件音量控制。
-Nano rc.5已完成安装、旧板状态迁移、重启和人工试听；Modern0.2.8本轮为双架构CI验证。
+Nano 已确认 NX 连接后的实体播放；Modern 本轮没有新增实板验收。
 详细范围见[验收记录](VALIDATION.md)，不代表所有镜像或完整AEC均已验证。
 
 ## 1. 在线安装
@@ -67,18 +67,18 @@ sudo apt install xraudio-audio-defaults-legacy
 从 [Releases](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases) 下载
 对应平台／架构的 DEB 和 `SHA256SUMS`，或联系获取 ZIP。ZIP 先解压，在文件所在目录执行。
 
-**RPI／PipeWire 系统（0.2.8）：**
+**RPI／PipeWire 系统（0.2.9）：**
 
 ```bash
 sha256sum --check SHA256SUMS --ignore-missing && \
-  sudo apt install ./xraudio-audio-defaults_0.2.8_arm64.deb
+  sudo apt install ./xraudio-audio-defaults_0.2.9_arm64.deb
 ```
 
 **Jetson Nano／Ubuntu 18.04／PulseAudio：**
 
 ```bash
 sha256sum --check SHA256SUMS --ignore-missing && \
-  sudo apt install ./xraudio-audio-defaults-legacy_0.1.0-rc.5_arm64.deb
+  sudo apt install ./xraudio-audio-defaults-legacy_0.1.0-rc.6_arm64.deb
 ```
 
 `amd64` 系统换成对应文件名。旧版直接覆盖安装，无需先卸载。
@@ -118,7 +118,33 @@ journalctl --user -u xraudio-audio-session.service -n 50 --no-pager
 
 Legacy 的日志将服务名改为 `xraudio-audio-session-legacy.service`。
 
-## 4. 卸载
+## 4. 机器人使用 NoMachine（可选）
+
+仅需要远程桌面、不需要远程声音的机器人，可关闭 NX 音频接管，避免连接后实体
+喇叭被压低。普通桌面安装默认不启用；桌面和键鼠功能保留。
+
+```bash
+sudo xraudio-robot-profile enable
+sudo xraudio-robot-profile status
+```
+
+安装包不会自动重启 NX。安排好维护窗口后执行（会断开远程桌面）：
+
+```bash
+sudo systemctl restart nxserver.service
+```
+
+Nano／PulseAudio 再由普通音频用户执行：
+
+```bash
+systemctl --user restart xraudio-audio-session-legacy.service
+```
+
+软件音量和静音仍可正常使用，不修改 MIC。Modern 保持系统原有硬件音量 owner。
+撤销用 `sudo xraudio-robot-profile disable`，再安排 NX 维护重启；仅恢复本工具
+仍拥有的音频配置，不覆盖管理员后来的修改。
+
+## 5. 卸载
 
 ```bash
 sudo apt remove xraudio-audio-defaults

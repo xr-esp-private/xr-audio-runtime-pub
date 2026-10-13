@@ -1,5 +1,38 @@
 # Basic 发布与验收记录
 
+## 2026-10-13：机器人 NoMachine 音频策略
+
+- [Modern v0.2.9](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.9)：非prerelease，
+  [Release Action 38345343434](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38345343434)成功。
+- [Legacy v0.1.0-rc.6](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.1.0-rc.6)：保留prerelease，
+  [Release Action 38346078729](https://github.com/xr-esp-private/xr-audio-runtime-pub/actions/runs/38346078729)成功。
+- 四包均在APT `stable/main`，源码commit `25730d324149813a3d6e0253f63de2901a8d68a3`；
+  Validate分别为 `38345059605`、`38345053604`。源码正式main已推送GitHub/GitLab。
+- 维护端从GitHub另行下载；Nano用固定公钥SHA与GPG验证APT InRelease、两架构Packages
+  及四包SHA，均与正式Release一致。旧0.2.8/rc.5字节和固件ZIP未修改。
+
+```text
+1d6c5b8340e103079a41699f31d082ae9e021d04bf960421ab68ea3fdab23263  xraudio-audio-defaults_0.2.9_amd64.deb
+207c915b7bae2cb88ca33e5f594889b54ed4358072e33dc661e532836d588900  xraudio-audio-defaults_0.2.9_arm64.deb
+9cce7b708fb95eb716fc8d07d3a3a4016392b9a1dcb64ab967045862cae4dd27  xraudio-audio-defaults-legacy_0.1.0-rc.6_amd64.deb
+48e0dcc786b84c7feac91b0dfde875278a0b9f08fded0a392797908ad5194b4b  xraudio-audio-defaults-legacy_0.1.0-rc.6_arm64.deb
+```
+
+仅显式robot opt-in禁用NX音频/麦克风转发，保留桌面/键鼠；默认desktop不改。
+保存相关原键、保留后续管理员修改，支持撤销与后装NX协调；不自动重启NX，不加音量watchdog。
+Legacy复用现有单一helper的准确USB/schema准入及有界0dB基线；Modern仍不写硬件音量。
+
+Nano18.04.6/Pulse11.1/NX8.14.2：用户批准维护重启NX，重连后默认双端点与master/L/R0dB
+保持，同一低幅测试音连续播放两次exit0，用户确认实体声音及桌面键鼠正常。
+随后用户关机/开机，原策略自动恢复；完整Action rc.6覆盖安装rc.5，只升级本包，无系统库
+变化，无再次NX/主机重启。dpkg-V无差异、音频与path服务active、默认Speaker/Clean和0dB
+正确，播放exit0。安装包与正式Release/APT为同一SHA；没有新增现场MIC采集或固件烧录。
+完整rc.6安装后的再次重启、异常断网/退出、Modern实板及全声学/AEC仍未新增验收。
+
+Modern Release会重新构建：本轮Validate与Release的DEB整体SHA因tar时间元数据不同而不同，
+解包全部文件内容及控制脚本逐文件一致；以这里的正式Release SHA为交付依据，
+不宣称跨运行整包字节可复现。Legacy两次构建SHA一致。
+
 ## 2026-10-12：换板迁移修复发布
 
 - [Modern v0.2.8](https://github.com/xr-esp-private/xr-audio-runtime-pub/releases/tag/v0.2.8)：
